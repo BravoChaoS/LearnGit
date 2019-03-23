@@ -7,15 +7,28 @@ import java.awt.event.WindowEvent;
 
 public class GameFrame extends JFrame {
 
-    DefaultImage img = new DefaultImage();
+    Plane plane = new Plane("Plane", 250, 250);
     public void paint(Graphics g) {
-        g.setColor(img.plane.getColor());
-        g.setFont(img.plane.getFont());
-        g.drawString(img.plane.getImg(), 250,250);
+        plane.drawSelf(g);
     }
 
+    class PaintThread extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                repaint();
+                try {
+                    Thread.sleep(40);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     public void lunchFrame() {
-//        this.setBackground(Color.black);
+        this.setBackground(Color.white);
         this.setTitle("PlanWar");
         this.setVisible(true);
         this.setSize(500,500);
@@ -27,6 +40,8 @@ public class GameFrame extends JFrame {
                 System.exit(0);
             }
         });
+
+        new PaintThread().start();
 
     }
 
